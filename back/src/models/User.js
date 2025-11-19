@@ -61,10 +61,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = (models) => {
-    User.hasMany(models.Role, { foreignKey: "user_id", as: "roles" });
+    User.belongsTo(models.Role, { foreignKey: "role_id", as: "role", onDelete: "CASCADE" });
     User.hasOne(models.UserMeasurements, {
-      foreignKey: "user_id",
+      foreignKey: "user_measurements_id",
       as: "user_measurements",
+      onDelete: "CASCADE",
     });
   };
   return User;
