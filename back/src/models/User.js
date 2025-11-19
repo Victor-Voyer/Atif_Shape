@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      firstName: {
+      first_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      lastName: {
+      last_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -33,10 +33,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          isEmail: true,
+        },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          len: [8, 300],
+        },
       },
       role: {
         type: DataTypes.STRING,
@@ -56,7 +62,10 @@ module.exports = (sequelize, DataTypes) => {
   );
   User.associate = (models) => {
     User.hasMany(models.Role, { foreignKey: "user_id", as: "roles" });
-    User.hasOne(models.UserMeasurements, { foreignKey: "user_id", as: "user_measurements" });
+    User.hasOne(models.UserMeasurements, {
+      foreignKey: "user_id",
+      as: "user_measurements",
+    });
   };
   return User;
 };
