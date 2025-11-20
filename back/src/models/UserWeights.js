@@ -2,11 +2,6 @@ export default (sequelize, DataTypes) => {
   const UserWeight = sequelize.define(
     "UserWeight",
     {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
       weight: {
         type: DataTypes.FLOAT,
         allowNull: false,

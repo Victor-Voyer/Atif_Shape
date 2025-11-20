@@ -4,11 +4,6 @@ export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
       avatar: {
         type: DataTypes.STRING,
         allowNull: true,
