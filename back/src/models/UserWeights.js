@@ -10,7 +10,7 @@ export default (sequelize, DataTypes) => {
       measured_at: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
+        defaultValue: DataTypes.NOW,
         validate: {
           isDate: true,
         },
@@ -27,9 +27,7 @@ export default (sequelize, DataTypes) => {
     {
       tableName: "user_weights",
       underscored: true,
-      timestamps: true,
-      createdAt: "created_at",
-      updatedAt: "updated_at",
+      timestamps: false,
     }
   );
 
