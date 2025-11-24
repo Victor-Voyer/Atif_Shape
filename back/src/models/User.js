@@ -59,7 +59,7 @@ export default (sequelize, DataTypes) => {
           min: 100,
           max: 300,
         },
-      },
+      },      
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -74,7 +74,9 @@ export default (sequelize, DataTypes) => {
         validate: {
           len: [8, 300],
         },
-      },      
+      },
+
+      
     },
     {
       sequelize,

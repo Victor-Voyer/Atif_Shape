@@ -1,0 +1,146 @@
+.layout-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+
+.chart-wrapper {
+  height: 230px;
+}
+
+.empty-state {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.stat-card {
+  flex: 1 1 calc(33.333% - 1rem);
+  padding: 0.9rem 1rem;
+  border-radius: 0.9rem;
+  border: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 50%, #f9fafb 100%);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.4rem;
+}
+
+.stat-value {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.stat-trend {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #16a34a;
+}
+
+.stat-trend.negative {
+  color: #dc2626;
+}
+
+.stat-sub {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.weight-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.weight-form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.weight-form-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.weight-form-input {
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.weight-form-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+}
+
+.weight-form-button {
+  border-radius: 0.75rem;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: #111827;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.weight-form-button:disabled {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.card-summary {
+  padding: 1.2rem;
+}
+
+.card-summary .card-title {
+  font-size: 1.25rem;
+}
+
+.card-summary .stat-card {
+  padding: 1.15rem 1.3rem;
+}
+
+.card-summary .stat-label {
+  font-size: 0.9rem;
+}
+
+.card-summary .stat-value {
+  font-size: 1.35rem;
+}
+
+.card-summary .stat-trend {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .stats-row {
+    flex-direction: column;
+  }
+
+  .weight-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+

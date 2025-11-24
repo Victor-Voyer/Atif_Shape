@@ -5,7 +5,6 @@ export default (sequelize, DataTypes) => {
       weight: {
         type: DataTypes.FLOAT,
         allowNull: false,
-        validate: { min: 0 },
       },
       measured_at: {
         type: DataTypes.DATE,

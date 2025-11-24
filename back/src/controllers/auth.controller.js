@@ -11,8 +11,8 @@ export const registerUser = async (req, res) => {
         });
     }
     try {
-        const { name, email, password} = req.body;
-        const user = await register(name,email, password);
+        
+        const user = await register(req.body);
         res.status(201).json({ 
             success: true,
             message: 'Utilisateur créé avec succès',

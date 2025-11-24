@@ -3,9 +3,19 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { promises as fs } from "fs";
 
+import { calculateMaxWeight, calculateMinWeight, getStartingWeight, calculateIMC } from "../utils/weight/algoWeight.js";
+import { getDaysSinceFirstMeasure, getMeasuresCount, getWeightLastWeek, getWeightLastMonth } from "../utils/dates/algoDate.js";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const uploadPath = path.join(__dirname,"..","..","public","uploads","avatars");
+const uploadPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "public",
+  "uploads",
+  "avatars"
+);
 
 const { User, UserWeight } = db;
 
@@ -25,7 +35,7 @@ export const getUsers = async (req, res) => {
       data: users,
     });
   } catch (error) {
-    // console.log("Erreur getUsers", error);    
+    // console.log("Erreur getUsers", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -63,52 +73,17 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
-  try {
-    const {
-      gender,
-      username,
-      first_name,
-      last_name,
-      age,
-      height,
-      email,
-      password,
-    } = req.body;
-
-    const payload = {
-      gender,
-      username,
-      first_name,
-      last_name,
-      age,
-      height,
-      email,
-      password,
-      avatar: req.file ? req.file.filename : null,
-    };
-
-    const user = await User.create(payload);
-    const userWithWeights = await User.findOne({
-      where: { id: user.id },
-      include: [
-        {
-          model: UserWeight,
-          as: "user_weights",
-        },
-      ],
+export const createNewUserWeight = async (req, res) => {
+    const { weight } = req.body;
+    const userWeight = await UserWeight.create({
+      weight: weight,
+      user_id: req.user.id,
     });
     res.status(201).json({
       success: true,
-      message: "L'utilisateur a été créé avec succès",
-      data: userWithWeights,
+      message: "Le poids de l'utilisateur a été créé avec succès",
+      data: userWeight,
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
 };
 
 export const updateUser = async (req, res) => {
@@ -200,4 +175,60 @@ export const deleteUser = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+export const getUserStats = async (req, res) => {
+    const { id } = req.params;
+
+    const [
+      startingWeight,
+      maxWeight,
+      minWeight,
+      daysSinceFirst,
+      measuresCount,
+      diffWeek,
+      diffMonth,
+      user,
+      latestWeightRow,
+    ] = await Promise.all([
+      getStartingWeight(id),
+      calculateMaxWeight(id),
+      calculateMinWeight(id),
+      getDaysSinceFirstMeasure(id),
+      getMeasuresCount(id),
+      getWeightLastWeek(id),
+      getWeightLastMonth(id),
+      User.findByPk(id),
+      UserWeight.findOne({
+        where: { user_id: id },
+        order: [["measured_at", "DESC"]],
+      }),
+    ]);
+
+    let imc = null;
+    if (user && user.height && latestWeightRow && latestWeightRow.weight) {
+      try {
+        imc = calculateIMC(
+          Number(latestWeightRow.weight),
+          Number(user.height),
+        );
+      } catch {
+        imc = null;
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Statistiques de poids récupérées avec succès",
+      data: {
+        imc,
+        startingWeight,
+        maxWeight,
+        minWeight,
+        daysSinceFirstMeasure: daysSinceFirst,
+        measuresCount,
+        weightLastWeek: diffWeek,
+        weightLastMonth: diffMonth,
+      },
+  });
 };
