@@ -16,7 +16,7 @@ export function calculateIMC(weightKg, heightCm) {
   else category = "Obésité";
 
   return {
-    imc: Number(imc.toFixed(1)),
+    bmi: Number(imc.toFixed(1)),
     category,
   };
 }
