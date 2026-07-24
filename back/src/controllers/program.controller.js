@@ -1,9 +1,14 @@
 import * as programService from "../services/program.service.js";
 import { sendSuccess, sendError } from "../utils/httpResponse.js";
 
-export const getUserProgram = async (req, res) => {
+export const generateUserProgram = async (req, res) => {
   try {
-    const program = await programService.getUserProgram(req.params.id);
+    const { sessionsPerWeek, equipment, level } = req.body;
+    const program = await programService.generateUserProgram(req.params.id, {
+      sessionsPerWeek,
+      equipment,
+      level,
+    });
     if (!program) {
       return sendError(res, 404, "L'utilisateur n'a pas été trouvé");
     }

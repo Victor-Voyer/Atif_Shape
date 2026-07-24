@@ -1,3 +1,64 @@
+.program-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.program-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.program-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.program-form-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.program-form-input {
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 0.95rem;
+  outline: none;
+  background-color: var(--color-surface);
+}
+
+.program-form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary-ring);
+}
+
+.program-form-submit {
+  align-self: flex-start;
+  border-radius: var(--radius-md);
+  border: none;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: var(--color-btn-dark);
+  color: var(--color-surface);
+  cursor: pointer;
+}
+
+.program-form-submit:disabled {
+  opacity: 0.75;
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .program-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .program-summary {
   margin-bottom: 1.2rem;
 }

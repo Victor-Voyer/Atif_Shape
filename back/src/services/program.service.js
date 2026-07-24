@@ -6,7 +6,7 @@ import { generateProgram } from "../utils/program/algoProgram.js";
 
 const { User } = db;
 
-export async function getUserProgram(userId) {
+export async function generateUserProgram(userId, preferences) {
   const [weights, user] = await Promise.all([
     getWeightsByUserId(userId),
     User.findByPk(userId),
@@ -40,5 +40,8 @@ export async function getUserProgram(userId) {
     direction: goal?.direction ?? null,
     imcCategory,
     age: getAge(user.birthdate),
+    sessionsPerWeek: preferences?.sessionsPerWeek,
+    equipment: preferences?.equipment,
+    level: preferences?.level,
   });
 }

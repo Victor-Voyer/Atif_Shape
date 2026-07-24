@@ -1,6 +1,12 @@
 import { body, validationResult } from "express-validator";
 import db from "../../models/index.js";
-import { GENDER_VALUES } from "../../../../shared/constants.js";
+import {
+  GENDER_VALUES,
+  EQUIPMENT_VALUES,
+  FITNESS_LEVEL_VALUES,
+  MIN_SESSIONS_PER_WEEK,
+  MAX_SESSIONS_PER_WEEK,
+} from "../../../../shared/constants.js";
 import { sendError } from "../../utils/httpResponse.js";
 
 const { User } = db;
@@ -268,4 +274,29 @@ export const createWeightValidation = [
     .bail()
     .isFloat({ min: 1, max: 500 })
     .withMessage("weight doit être un nombre compris entre 1 et 500"),
+];
+
+export const generateProgramValidation = [
+  body("sessionsPerWeek")
+    .exists({ checkNull: true })
+    .withMessage("sessionsPerWeek est obligatoire")
+    .bail()
+    .isInt({ min: MIN_SESSIONS_PER_WEEK, max: MAX_SESSIONS_PER_WEEK })
+    .withMessage(
+      `sessionsPerWeek doit être un entier compris entre ${MIN_SESSIONS_PER_WEEK} et ${MAX_SESSIONS_PER_WEEK}`
+    ),
+
+  body("equipment")
+    .exists({ checkNull: true })
+    .withMessage(`equipment est obligatoire et doit être "${EQUIPMENT_VALUES.join('" ou "')}"`)
+    .bail()
+    .isIn(EQUIPMENT_VALUES)
+    .withMessage(`equipment doit être "${EQUIPMENT_VALUES.join('" ou "')}"`),
+
+  body("level")
+    .exists({ checkNull: true })
+    .withMessage(`level est obligatoire et doit être "${FITNESS_LEVEL_VALUES.join('" ou "')}"`)
+    .bail()
+    .isIn(FITNESS_LEVEL_VALUES)
+    .withMessage(`level doit être "${FITNESS_LEVEL_VALUES.join('" ou "')}"`),
 ];

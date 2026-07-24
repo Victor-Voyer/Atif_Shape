@@ -6,10 +6,11 @@ import {
   getUserById,
 } from "../controllers/users.controller.js";
 import { createWeight } from "../controllers/weights.controller.js";
-import { getUserProgram } from "../controllers/program.controller.js";
+import { generateUserProgram } from "../controllers/program.controller.js";
 import {
   updateUserValidation,
   createWeightValidation,
+  generateProgramValidation,
   handleValidationErrors,
 } from "../middlewares/validators/user.validation.js";
 import { verifyToken, requireSelf } from "../middlewares/auth.js";
@@ -27,7 +28,14 @@ router.put(
 );
 router.delete("/:id", verifyToken, requireSelf, deleteUser);
 router.get("/:id/stats", verifyToken, requireSelf, getUserStats);
-router.get("/:id/program", verifyToken, requireSelf, getUserProgram);
+router.post(
+  "/:id/program",
+  verifyToken,
+  requireSelf,
+  generateProgramValidation,
+  handleValidationErrors,
+  generateUserProgram
+);
 router.post(
   "/:id/weights",
   verifyToken,
