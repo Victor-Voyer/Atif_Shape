@@ -2,6 +2,15 @@ function normalizeDate(date) {
   return new Date(date);
 }
 
+export function getWeekStart(date = new Date()) {
+  const d = normalizeDate(date);
+  const day = d.getDay();
+  const diff = (day === 0 ? -6 : 1) - day;
+  d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString().slice(0, 10);
+}
+
 export function getAge(birthdate) {
   if (!birthdate) return null;
 

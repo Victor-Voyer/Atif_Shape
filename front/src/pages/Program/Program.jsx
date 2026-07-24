@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth.js";
-import { useGenerateProgram } from "../../hooks/useGenerateProgram.js";
+import { useProgram } from "../../hooks/useProgram.js";
 import {
   EQUIPMENT_OPTIONS,
   FITNESS_LEVELS,
@@ -27,14 +27,27 @@ const LEVEL_LABELS = {
   [FITNESS_LEVELS.ADVANCED]: "Avancé",
 };
 
+const DEFAULT_PREFERENCES = {
+  sessionsPerWeek: 3,
+  equipment: EQUIPMENT_OPTIONS.NONE,
+  level: FITNESS_LEVELS.BEGINNER,
+};
+
 function Program() {
   const { user } = useAuth();
-  const { program, loading, error, generate } = useGenerateProgram(user?.id);
-  const [preferences, setPreferences] = useState({
-    sessionsPerWeek: 3,
-    equipment: EQUIPMENT_OPTIONS.NONE,
-    level: FITNESS_LEVELS.BEGINNER,
-  });
+  const { program, loading, error, actionError, busy, generate, toggleComplete, swap, exclude } =
+    useProgram(user?.id);
+  const [preferences, setPreferences] = useState(DEFAULT_PREFERENCES);
+  const [syncedProgram, setSyncedProgram] = useState(null);
+
+  if (program && program !== syncedProgram) {
+    setSyncedProgram(program);
+    setPreferences({
+      sessionsPerWeek: program.sessionsPerWeek,
+      equipment: program.equipment,
+      level: program.level,
+    });
+  }
 
   const handleChange = (field) => (event) => {
     const value = event.target.value;
@@ -46,6 +59,12 @@ function Program() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (program) {
+      const confirmed = window.confirm(
+        "Régénérer ton programme remplace toutes tes séances actuelles et ta progression de la semaine. Continuer ?"
+      );
+      if (!confirmed) return;
+    }
     await generate(preferences);
   };
 
@@ -121,24 +140,22 @@ function Program() {
             </div>
           </div>
 
-          {error && <p className="form-error">{error}</p>}
+          {actionError && <p className="form-error">{actionError}</p>}
 
-          <button type="submit" className="program-form-submit" disabled={loading}>
-            {loading
-              ? "Génération..."
-              : program
-                ? "Régénérer mon programme"
-                : "Générer mon programme"}
+          <button type="submit" className="program-form-submit" disabled={busy}>
+            {busy ? "Génération..." : program ? "Régénérer mon programme" : "Générer mon programme"}
           </button>
         </form>
 
-        {!program && !loading && (
+        {loading ? (
+          <div className="empty-state">Chargement de votre programme...</div>
+        ) : error ? (
+          <div className="empty-state empty-state--error">{error}</div>
+        ) : !program ? (
           <div className="empty-state">
             Renseigne tes préférences puis génère ton programme personnalisé.
           </div>
-        )}
-
-        {program && (
+        ) : (
           <div className="program-result">
             <div className="program-summary">
               <span className="program-direction">
@@ -153,21 +170,54 @@ function Program() {
             </div>
 
             <div className="program-sessions">
-              {program.sessions.map((session, index) => (
-                <div className="program-session" key={index}>
+              {program.sessions.map((session) => (
+                <div className="program-session" key={session.id}>
                   <div className="program-session-header">
-                    <span className="program-session-type">{session.type}</span>
-                    <span className="program-session-intensity">
-                      {session.intensity}
-                    </span>
+                    <span className="program-session-day">{session.day}</span>
+                    <span className="program-session-intensity">{session.intensity}</span>
                   </div>
-                  <div className="program-session-focus">{session.focus}</div>
-                  <p className="program-session-description">
-                    {session.description}
-                  </p>
-                  <div className="program-session-duration">
-                    {session.durationMinutes} min
+                  <div className="program-session-focus">
+                    {session.type} · {session.focus} · {session.durationMinutes} min
                   </div>
+
+                  <ul className="program-session-exercises">
+                    {session.exercises.map((exercise) => (
+                      <li key={exercise.id} className="program-exercise-row">
+                        <span>
+                          {exercise.sets} série{exercise.sets > 1 ? "s" : ""} de {exercise.reps}{" "}
+                          {exercise.name}
+                        </span>
+                        <span className="program-exercise-actions">
+                          <button
+                            type="button"
+                            className="program-exercise-action"
+                            disabled={busy}
+                            onClick={() => swap(session.id, exercise.id)}
+                          >
+                            Remplacer
+                          </button>
+                          <button
+                            type="button"
+                            className="program-exercise-action program-exercise-action--danger"
+                            disabled={busy}
+                            onClick={() => exclude(session.id, exercise.id)}
+                          >
+                            Retirer
+                          </button>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <label className="program-session-complete">
+                    <input
+                      type="checkbox"
+                      checked={session.completedThisWeek}
+                      disabled={busy}
+                      onChange={() => toggleComplete(session.id)}
+                    />
+                    Séance faite cette semaine
+                  </label>
                 </div>
               ))}
             </div>

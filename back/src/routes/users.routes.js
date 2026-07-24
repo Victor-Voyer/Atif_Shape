@@ -6,7 +6,13 @@ import {
   getUserById,
 } from "../controllers/users.controller.js";
 import { createWeight } from "../controllers/weights.controller.js";
-import { generateUserProgram } from "../controllers/program.controller.js";
+import {
+  generateUserProgram,
+  getUserProgram,
+  toggleSessionCompletion,
+  swapProgramExercise,
+  excludeProgramExercise,
+} from "../controllers/program.controller.js";
 import {
   updateUserValidation,
   createWeightValidation,
@@ -28,6 +34,7 @@ router.put(
 );
 router.delete("/:id", verifyToken, requireSelf, deleteUser);
 router.get("/:id/stats", verifyToken, requireSelf, getUserStats);
+router.get("/:id/program", verifyToken, requireSelf, getUserProgram);
 router.post(
   "/:id/program",
   verifyToken,
@@ -35,6 +42,24 @@ router.post(
   generateProgramValidation,
   handleValidationErrors,
   generateUserProgram
+);
+router.post(
+  "/:id/program/sessions/:sessionId/complete",
+  verifyToken,
+  requireSelf,
+  toggleSessionCompletion
+);
+router.post(
+  "/:id/program/sessions/:sessionId/exercises/:exerciseId/swap",
+  verifyToken,
+  requireSelf,
+  swapProgramExercise
+);
+router.delete(
+  "/:id/program/sessions/:sessionId/exercises/:exerciseId",
+  verifyToken,
+  requireSelf,
+  excludeProgramExercise
 );
 router.post(
   "/:id/weights",

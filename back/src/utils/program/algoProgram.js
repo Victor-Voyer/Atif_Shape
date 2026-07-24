@@ -1,200 +1,59 @@
-import {
-  EQUIPMENT_VALUES,
-  FITNESS_LEVEL_VALUES,
-  MIN_SESSIONS_PER_WEEK,
-  MAX_SESSIONS_PER_WEEK,
-} from "../../../../shared/constants.js";
+import { EQUIPMENT_VALUES, FITNESS_LEVEL_VALUES, MIN_SESSIONS_PER_WEEK, MAX_SESSIONS_PER_WEEK } from "../../../../shared/constants.js";
 
-const LOW_IMPACT_IMC_CATEGORIES = ["Surpoids", "Obésité"];
-const SENIOR_AGE_THRESHOLD = 55;
+export const LOW_IMPACT_IMC_CATEGORIES = ["Surpoids", "Obésité"];
+export const SENIOR_AGE_THRESHOLD = 55;
 const INTENSITY_SCALE = ["Faible", "Modérée", "Élevée"];
 const DEFAULT_SESSIONS_PER_WEEK = 3;
 
+export const DAY_PATTERNS = {
+  2: ["Lundi", "Jeudi"],
+  3: ["Lundi", "Mercredi", "Vendredi"],
+  4: ["Lundi", "Mardi", "Jeudi", "Vendredi"],
+  5: ["Lundi", "Mardi", "Mercredi", "Vendredi", "Samedi"],
+  6: ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+};
+
 const GAIN_POOL = [
-  {
-    type: "Musculation",
-    focus: "Haut du corps",
-    baseDuration: 45,
-    baseIntensity: "Élevée",
-    descriptions: {
-      none: "Pompes, dips sur chaise, tirage élastique, gainage.",
-      home: "Haltères : développé, rowing, élévations latérales.",
-      gym: "Développé couché, tirage poulie, machines épaules/bras.",
-    },
-  },
-  {
-    type: "Musculation",
-    focus: "Bas du corps",
-    baseDuration: 45,
-    baseIntensity: "Élevée",
-    descriptions: {
-      none: "Squats, fentes, pont fessier au poids du corps.",
-      home: "Squats et fentes lestés aux haltères, mollets.",
-      gym: "Presse à cuisses, leg curl, squat guidé.",
-    },
-  },
-  {
-    type: "Cardio léger",
-    focus: "Récupération active",
-    baseDuration: 20,
-    baseIntensity: "Faible",
-    descriptions: {
-      none: "Marche rapide en extérieur.",
-      home: "Vélo d'appartement à faible intensité.",
-      gym: "Vélo ou tapis de course, allure légère.",
-    },
-  },
-  {
-    type: "Musculation",
-    focus: "Full body",
-    baseDuration: 45,
-    baseIntensity: "Élevée",
-    descriptions: {
-      none: "Circuit pompes, squats, gainage, burpees.",
-      home: "Circuit haltères, tout le corps.",
-      gym: "Superset machines guidées, tout le corps.",
-    },
-  },
+  { type: "Musculation", focus: "Haut du corps", baseDuration: 45, baseIntensity: "Élevée", exerciseSlots: 3 },
+  { type: "Musculation", focus: "Bas du corps", baseDuration: 45, baseIntensity: "Élevée", exerciseSlots: 3 },
+  { type: "Cardio", focus: "Récupération active", baseDuration: 20, baseIntensity: "Faible", exerciseSlots: 1 },
+  { type: "Musculation", focus: "Full body", baseDuration: 45, baseIntensity: "Élevée", exerciseSlots: 3 },
 ];
 
 const LOSE_LOW_IMPACT_POOL = [
-  {
-    type: "Cardio",
-    focus: "Faible impact",
-    baseDuration: 30,
-    baseIntensity: "Faible",
-    descriptions: {
-      none: "Marche rapide en extérieur.",
-      home: "Vélo d'appartement ou corde à sauter douce.",
-      gym: "Vélo, elliptique ou natation.",
-    },
-  },
-  {
-    type: "Renforcement",
-    focus: "Full body léger",
-    baseDuration: 30,
-    baseIntensity: "Faible",
-    descriptions: {
-      none: "Exercices au poids du corps, sans impact articulaire.",
-      home: "Élastiques et poids légers, sans impact.",
-      gym: "Machines guidées à charge légère.",
-    },
-  },
-  {
-    type: "Cardio",
-    focus: "Faible impact",
-    baseDuration: 30,
-    baseIntensity: "Modérée",
-    descriptions: {
-      none: "Marche rapide en côte ou escaliers.",
-      home: "Vélo d'appartement, allure soutenue.",
-      gym: "Vélo ou elliptique, allure soutenue.",
-    },
-  },
+  { type: "Cardio", focus: "Faible impact", baseDuration: 30, baseIntensity: "Faible", exerciseSlots: 1 },
+  { type: "Renforcement", focus: "Full body léger", baseDuration: 30, baseIntensity: "Faible", exerciseSlots: 3 },
+  { type: "Cardio", focus: "Faible impact", baseDuration: 30, baseIntensity: "Modérée", exerciseSlots: 1 },
 ];
 
 const LOSE_STANDARD_POOL = [
-  {
-    type: "Cardio",
-    focus: "HIIT",
-    baseDuration: 25,
-    baseIntensity: "Élevée",
-    descriptions: {
-      none: "Alternance sprint/marche, burpees, jumping jacks.",
-      home: "Corde à sauter, circuit haltères légers.",
-      gym: "Vélo ou rameur en fractionné.",
-    },
-  },
-  {
-    type: "Renforcement",
-    focus: "Full body",
-    baseDuration: 40,
-    baseIntensity: "Modérée",
-    descriptions: {
-      none: "Circuit poids du corps : pompes, squats, gainage.",
-      home: "Circuit haltères ou élastiques, tout le corps.",
-      gym: "Circuit machines guidées, tout le corps.",
-    },
-  },
-  {
-    type: "Cardio",
-    focus: "Continu",
-    baseDuration: 35,
-    baseIntensity: "Modérée",
-    descriptions: {
-      none: "Course ou marche rapide en extérieur.",
-      home: "Vélo d'appartement à allure régulière.",
-      gym: "Course, vélo ou rameur à allure régulière.",
-    },
-  },
-  {
-    type: "Renforcement",
-    focus: "Full body",
-    baseDuration: 40,
-    baseIntensity: "Modérée",
-    descriptions: {
-      none: "Circuit poids du corps : pompes, squats, gainage.",
-      home: "Circuit haltères ou élastiques, tout le corps.",
-      gym: "Circuit machines guidées, tout le corps.",
-    },
-  },
+  { type: "Cardio", focus: "HIIT", baseDuration: 25, baseIntensity: "Élevée", exerciseSlots: 1 },
+  { type: "Renforcement", focus: "Full body", baseDuration: 40, baseIntensity: "Modérée", exerciseSlots: 3 },
+  { type: "Cardio", focus: "Continu", baseDuration: 35, baseIntensity: "Modérée", exerciseSlots: 1 },
+  { type: "Renforcement", focus: "Full body", baseDuration: 40, baseIntensity: "Modérée", exerciseSlots: 3 },
 ];
 
 const MAINTAIN_POOL = [
-  {
-    type: "Cardio",
-    focus: "Continu",
-    baseDuration: 30,
-    baseIntensity: "Modérée",
-    descriptions: {
-      none: "Course ou marche rapide en extérieur.",
-      home: "Vélo d'appartement à allure régulière.",
-      gym: "Course, vélo ou natation à allure régulière.",
-    },
-  },
-  {
-    type: "Renforcement",
-    focus: "Full body",
-    baseDuration: 40,
-    baseIntensity: "Modérée",
-    descriptions: {
-      none: "Circuit poids du corps : pompes, squats, gainage.",
-      home: "Circuit haltères ou élastiques, tout le corps.",
-      gym: "Circuit machines guidées, tout le corps.",
-    },
-  },
-  {
-    type: "Mobilité",
-    focus: "Étirements & souplesse",
-    baseDuration: 25,
-    baseIntensity: "Faible",
-    descriptions: {
-      none: "Stretching ou yoga au sol.",
-      home: "Stretching ou yoga avec tapis.",
-      gym: "Cours collectif stretching/yoga si disponible.",
-    },
-  },
+  { type: "Cardio", focus: "Continu", baseDuration: 30, baseIntensity: "Modérée", exerciseSlots: 1 },
+  { type: "Renforcement", focus: "Full body", baseDuration: 40, baseIntensity: "Modérée", exerciseSlots: 3 },
+  { type: "Mobilité", focus: "Étirements & souplesse", baseDuration: 25, baseIntensity: "Faible", exerciseSlots: 2 },
 ];
 
-const RECOVERY_TEMPLATE = {
+export const RECOVERY_TEMPLATE = {
   type: "Mobilité",
   focus: "Récupération",
   baseDuration: 20,
   baseIntensity: "Faible",
-  descriptions: {
-    none: "Étirements doux au sol.",
-    home: "Étirements doux avec tapis.",
-    gym: "Étirements doux, éventuellement sauna ou piscine.",
-  },
+  exerciseSlots: 1,
 };
 
-function clampSessionsPerWeek(value) {
+export function clampSessionsPerWeek(value) {
   const n = Number(value);
   if (!Number.isFinite(n)) return DEFAULT_SESSIONS_PER_WEEK;
   return Math.min(MAX_SESSIONS_PER_WEEK, Math.max(MIN_SESSIONS_PER_WEEK, Math.round(n)));
 }
 
-function adjustIntensity(baseIntensity, level) {
+export function adjustIntensity(baseIntensity, level) {
   const idx = INTENSITY_SCALE.indexOf(baseIntensity);
   if (idx === -1) return baseIntensity;
   if (level === "beginner") return INTENSITY_SCALE[Math.max(0, idx - 1)];
@@ -202,19 +61,25 @@ function adjustIntensity(baseIntensity, level) {
   return baseIntensity;
 }
 
-function adjustDuration(baseDuration, level) {
+export function adjustDuration(baseDuration, level) {
   if (level === "beginner") return Math.max(15, baseDuration - 10);
   if (level === "advanced") return baseDuration + 10;
   return baseDuration;
 }
 
-function buildSession(template, { equipment, level }) {
+export function adjustSets(baseSets, level) {
+  if (baseSets <= 1) return baseSets;
+  if (level === "beginner") return Math.max(2, baseSets - 1);
+  if (level === "advanced") return baseSets + 1;
+  return baseSets;
+}
+
+export function adjustExerciseForLevel(rawExercise, { level, durationMinutes }) {
   return {
-    type: template.type,
-    focus: template.focus,
-    durationMinutes: adjustDuration(template.baseDuration, level),
-    intensity: adjustIntensity(template.baseIntensity, level),
-    description: template.descriptions[equipment] ?? template.descriptions.none,
+    exerciseId: rawExercise.id ?? rawExercise.exerciseId ?? null,
+    name: rawExercise.name,
+    sets: adjustSets(rawExercise.default_sets ?? rawExercise.sets, level),
+    reps: rawExercise.default_reps ?? rawExercise.reps ?? `${durationMinutes} min`,
   };
 }
 
@@ -230,14 +95,7 @@ function focusSummaryFor(direction, isLowImpact) {
   return "Maintien du poids : équilibre entre cardio, renforcement et mobilité.";
 }
 
-export function generateProgram({
-  direction,
-  imcCategory,
-  age,
-  sessionsPerWeek,
-  equipment,
-  level,
-} = {}) {
+export function generateProgramStructure({ direction, imcCategory, age, sessionsPerWeek, equipment, level } = {}) {
   const normalizedDirection = ["lose", "gain"].includes(direction) ? direction : "maintain";
   const normalizedEquipment = EQUIPMENT_VALUES.includes(equipment) ? equipment : "none";
   const normalizedLevel = FITNESS_LEVEL_VALUES.includes(level) ? level : "beginner";
@@ -254,14 +112,21 @@ export function generateProgram({
           : LOSE_STANDARD_POOL
         : MAINTAIN_POOL;
 
-  const context = { equipment: normalizedEquipment, level: normalizedLevel };
-  const sessions = Array.from({ length: targetCount }, (_, index) =>
-    buildSession(pool[index % pool.length], context)
-  );
+  const days = DAY_PATTERNS[targetCount] ?? DAY_PATTERNS[DEFAULT_SESSIONS_PER_WEEK];
+  const templates = Array.from({ length: targetCount }, (_, index) => pool[index % pool.length]);
 
-  if (isSenior && !sessions.some((session) => session.type === "Mobilité")) {
-    sessions[sessions.length - 1] = buildSession(RECOVERY_TEMPLATE, context);
+  if (isSenior && !templates.some((template) => template.type === "Mobilité")) {
+    templates[templates.length - 1] = RECOVERY_TEMPLATE;
   }
+
+  const sessions = templates.map((template, index) => ({
+    day: days[index],
+    type: template.type,
+    focus: template.focus,
+    durationMinutes: adjustDuration(template.baseDuration, normalizedLevel),
+    intensity: adjustIntensity(template.baseIntensity, normalizedLevel),
+    exerciseSlots: template.exerciseSlots,
+  }));
 
   return {
     direction: normalizedDirection,

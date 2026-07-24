@@ -88,7 +88,7 @@
 
 .program-sessions {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   margin-bottom: 1.2rem;
 }
@@ -107,7 +107,7 @@
   margin-bottom: 0.4rem;
 }
 
-.program-session-type {
+.program-session-day {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-text-strong);
@@ -121,18 +121,64 @@
 .program-session-focus {
   font-size: 0.85rem;
   color: var(--color-text-soft);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
-.program-session-description {
+.program-session-exercises {
+  margin: 0 0 0.6rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.program-exercise-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
   font-size: 0.8rem;
   color: var(--color-text-muted);
-  margin: 0 0 0.4rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.program-session-duration {
+.program-exercise-row:last-child {
+  border-bottom: none;
+}
+
+.program-exercise-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.program-exercise-action {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-soft);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.55rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.program-exercise-action:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.program-exercise-action--danger {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.program-session-complete {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.8rem;
-  color: var(--color-text-subtle);
+  color: var(--color-text-soft);
+  cursor: pointer;
 }
 
 .program-disclaimer {

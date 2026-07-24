@@ -93,6 +93,11 @@ export default (sequelize, DataTypes) => {
       as: "user_weights",
       onDelete: "CASCADE",
     });
+    User.hasOne(models.UserProgram, {
+      foreignKey: "user_id",
+      as: "program",
+      onDelete: "CASCADE",
+    });
   };
   return User;
 };
