@@ -5,3 +5,28 @@
   align-items: stretch;
   margin-bottom: 2rem;
 }
+
+.weight-delta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.weight-delta-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.weight-delta-value {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.weight-delta--good .weight-delta-value {
+  color: var(--color-success);
+}
+
+.weight-delta--bad .weight-delta-value {
+  color: var(--color-danger-strong);
+}

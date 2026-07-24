@@ -55,6 +55,23 @@ function Dashboard() {
         )
       : null;
 
+  const weightDelta =
+    chartData.length >= 2
+      ? Number(
+          (
+            chartData[chartData.length - 1].weight - chartData[0].weight
+          ).toFixed(1)
+        )
+      : null;
+
+  const goalDirection = stats?.goal?.direction ?? "lose";
+  const isGoodProgress =
+    weightDelta == null
+      ? null
+      : goalDirection === "gain"
+      ? weightDelta >= 0
+      : weightDelta <= 0;
+
   return (
     <main className="layout-split">
       <section className="card">
@@ -65,6 +82,20 @@ function Dashboard() {
               Visualisez la tendance de votre poids sur la durée.
             </p>
           </div>
+
+          {weightDelta != null && (
+            <div
+              className={`weight-delta ${
+                isGoodProgress ? "weight-delta--good" : "weight-delta--bad"
+              }`}
+            >
+              <span className="weight-delta-label">Depuis le début</span>
+              <span className="weight-delta-value">
+                {weightDelta > 0 ? "+" : ""}
+                {weightDelta} kg
+              </span>
+            </div>
+          )}
         </div>
 
         <WeightForm
