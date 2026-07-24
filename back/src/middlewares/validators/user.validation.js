@@ -81,6 +81,11 @@ export const createUserValidation = [
     .isInt({ min: 100, max: 300 })
     .withMessage("height doit être un entier compris entre 100 et 300"),
 
+  body("target_weight")
+    .optional({ nullable: true })
+    .isFloat({ min: 1, max: 500 })
+    .withMessage("target_weight doit être un nombre compris entre 1 et 500"),
+
   body("email")
     .isString()
     .withMessage("email est obligatoire, il ne doit pas être vide")
@@ -129,6 +134,7 @@ export const updateUserValidation = [
         last_name,
         age,
         height,
+        target_weight,
         email,
         password,
       } = value;
@@ -140,6 +146,7 @@ export const updateUserValidation = [
         typeof last_name === "undefined" &&
         typeof age === "undefined" &&
         typeof height === "undefined" &&
+        typeof target_weight === "undefined" &&
         typeof email === "undefined" &&
         typeof password === "undefined"
       ) {
@@ -213,6 +220,11 @@ export const updateUserValidation = [
       }
       return true;
     }),
+
+  body("target_weight")
+    .optional({ nullable: true })
+    .isFloat({ min: 1, max: 500 })
+    .withMessage("target_weight doit être un nombre compris entre 1 et 500"),
 
   body("email")
     .optional()

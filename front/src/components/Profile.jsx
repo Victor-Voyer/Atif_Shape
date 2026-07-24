@@ -18,6 +18,7 @@ function Profile({ user, onUserUpdated }) {
       last_name: user?.last_name || "",
       age: toInputDate(user?.age),
       height: user?.height ?? "",
+      target_weight: user?.target_weight ?? "",
       email: user?.email || "",
     }),
     [user],
@@ -168,6 +169,23 @@ function Profile({ user, onUserUpdated }) {
                 value={form.height}
                 onChange={handleChange("height")}
                 className="profile-input"
+              />
+            </div>
+
+            <div className="profile-field">
+              <label className="profile-label" htmlFor="target_weight">
+                Objectif de poids (kg)
+              </label>
+              <input
+                id="target_weight"
+                type="number"
+                step="0.1"
+                min="1"
+                max="500"
+                value={form.target_weight}
+                onChange={handleChange("target_weight")}
+                className="profile-input"
+                placeholder="Ex : 70"
               />
             </div>
 

@@ -59,7 +59,15 @@ export default (sequelize, DataTypes) => {
           min: 100,
           max: 300,
         },
-      },      
+      },
+      target_weight: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+        validate: {
+          min: 1,
+          max: 500,
+        },
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,

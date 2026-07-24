@@ -6,9 +6,10 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
+  ReferenceLine,
 } from "recharts";
 
-function WeightChart({ data }) {
+function WeightChart({ data, targetWeight }) {
   if (!data || data.length === 0) {
     return <div className="empty-state">Pas encore de mesures de poids.</div>;
   }
@@ -50,6 +51,20 @@ function WeightChart({ data }) {
             dot={{ r: 3, strokeWidth: 1, stroke: "#2563eb", fill: "#ffffff" }}
             activeDot={{ r: 5 }}
           />
+          {targetWeight != null && (
+            <ReferenceLine
+              y={targetWeight}
+              stroke="#16a34a"
+              strokeDasharray="4 4"
+              strokeWidth={1.5}
+              label={{
+                value: `Objectif : ${targetWeight} kg`,
+                position: "insideTopRight",
+                fill: "#16a34a",
+                fontSize: 11,
+              }}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </div>

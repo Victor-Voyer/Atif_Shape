@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { promises as fs } from "fs";
 
-import { calculateMaxWeight, calculateMinWeight, getStartingWeight, calculateIMC } from "../utils/weight/algoWeight.js";
+import { calculateMaxWeight, calculateMinWeight, getStartingWeight, calculateIMC, calculateGoalProgress } from "../utils/weight/algoWeight.js";
 import { getDaysSinceFirstMeasure, getMeasuresCount, getWeightLastWeek, getWeightLastMonth } from "../utils/dates/algoDate.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -103,6 +103,7 @@ export const updateUser = async (req, res) => {
       last_name,
       age,
       height,
+      target_weight,
       email,
       password,
     } = req.body;
@@ -114,6 +115,7 @@ export const updateUser = async (req, res) => {
       last_name,
       age,
       height,
+      target_weight,
       email,
       password,
     };
@@ -217,6 +219,15 @@ export const getUserStats = async (req, res) => {
       }
     }
 
+    const goal =
+      user && user.target_weight != null && latestWeightRow
+        ? calculateGoalProgress(
+            startingWeight,
+            latestWeightRow.weight,
+            user.target_weight,
+          )
+        : null;
+
     return res.status(200).json({
       success: true,
       message: "Statistiques de poids récupérées avec succès",
@@ -229,6 +240,7 @@ export const getUserStats = async (req, res) => {
         measuresCount,
         weightLastWeek: diffWeek,
         weightLastMonth: diffMonth,
+        goal,
       },
   });
 };

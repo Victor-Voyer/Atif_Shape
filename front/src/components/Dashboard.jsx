@@ -21,6 +21,7 @@ function Dashboard({ user }) {
   const [addLoading, setAddLoading] = useState(false);
   const [addError, setAddError] = useState(null);
   const [reloadKey, setReloadKey] = useState(0);
+  const [targetWeight, setTargetWeight] = useState(null);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -43,6 +44,7 @@ function Dashboard({ user }) {
 
         setWeights(rawUser?.user_weights ?? []);
         setStats(rawStats ?? null);
+        setTargetWeight(rawUser?.target_weight ?? null);
       } catch (err) {
         if (cancelled) return;
         const message =
@@ -163,7 +165,7 @@ function Dashboard({ user }) {
             {error}
           </div>
         ) : (
-          <WeightChart data={chartData} />
+          <WeightChart data={chartData} targetWeight={targetWeight} />
         )}
       </section>
 
@@ -171,6 +173,43 @@ function Dashboard({ user }) {
         <div className="card-header">
           <div>
             <h2 className="card-title">Résumé</h2>
+          </div>
+        </div>
+
+        {/* Objectif de poids */}
+        <div className="stats-row">
+          <div className="stat-card goal-card">
+            <div className="stat-label">Objectif de poids</div>
+            {targetWeight == null ? (
+              <div className="stat-sub">
+                Aucun objectif défini. Renseignez-en un dans votre profil.
+              </div>
+            ) : (
+              <>
+                <div className="stat-value">{targetWeight} kg</div>
+                {stats?.goal ? (
+                  <>
+                    <div className="goal-progress-bar">
+                      <div
+                        className="goal-progress-fill"
+                        style={{ width: `${stats.goal.progressPercent}%` }}
+                      />
+                    </div>
+                    <div className="stat-sub">
+                      {stats.goal.reached
+                        ? "Objectif atteint 🎉"
+                        : `${stats.goal.remaining} kg ${
+                            stats.goal.direction === "lose" ? "à perdre" : "à prendre"
+                          } · ${stats.goal.progressPercent}% de l'objectif`}
+                    </div>
+                  </>
+                ) : (
+                  <div className="stat-sub">
+                    Ajoutez une mesure de poids pour suivre votre progression.
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
 
