@@ -1,3 +1,5 @@
+import "./StatsPanel.css";
+
 function StatsPanel({ stats, targetWeight, latestWeight }) {
   return (
     <aside className="card card-summary">
@@ -19,12 +21,11 @@ function StatsPanel({ stats, targetWeight, latestWeight }) {
               <div className="stat-value">{targetWeight} kg</div>
               {stats?.goal ? (
                 <>
-                  <div className="goal-progress-bar">
-                    <div
-                      className="goal-progress-fill"
-                      style={{ width: `${stats.goal.progressPercent}%` }}
-                    />
-                  </div>
+                  <progress
+                    className="goal-progress"
+                    max={100}
+                    value={stats.goal.progressPercent}
+                  />
                   <div className="stat-sub">
                     {stats.goal.reached
                       ? "Objectif atteint 🎉"
@@ -109,8 +110,10 @@ function StatsPanel({ stats, targetWeight, latestWeight }) {
         <div className="stat-card">
           <div className="stat-label">Évolution sur 7 jours</div>
           <div
-            className={`stat-trend ${
-              stats?.weightLastWeek && stats.weightLastWeek > 0 ? "negative" : ""
+            className={`stat-trend${
+              stats?.weightLastWeek && stats.weightLastWeek > 0
+                ? " stat-trend--negative"
+                : ""
             }`}
           >
             {stats?.weightLastWeek == null
@@ -124,8 +127,10 @@ function StatsPanel({ stats, targetWeight, latestWeight }) {
         <div className="stat-card">
           <div className="stat-label">Évolution sur 30 jours</div>
           <div
-            className={`stat-trend ${
-              stats?.weightLastMonth && stats.weightLastMonth > 0 ? "negative" : ""
+            className={`stat-trend${
+              stats?.weightLastMonth && stats.weightLastMonth > 0
+                ? " stat-trend--negative"
+                : ""
             }`}
           >
             {stats?.weightLastMonth == null

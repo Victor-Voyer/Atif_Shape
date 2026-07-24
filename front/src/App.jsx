@@ -1,9 +1,9 @@
 import { Navigate, NavLink, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import Profile from "./pages/Profile.jsx";
+import Login from "./pages/Login/Login.jsx";
+import Register from "./pages/Register/Register.jsx";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
 import LogoAkiShape from "./assets/Logo-AkiShape.png";
 import { useAuth } from "./hooks/useAuth.js";
 

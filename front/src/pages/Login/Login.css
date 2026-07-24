@@ -22,7 +22,7 @@
 
 .login-label {
   font-size: 0.9rem;
-  color: #374151;
+  color: var(--color-text-soft);
 }
 
 .login-radio-group {
@@ -49,20 +49,24 @@
   gap: 0.75rem;
 }
 
-.login-input {
+.login-input,
+.login-input-date {
   padding: 0.6rem 0.75rem;
-  border-radius: 0.6rem;
-  border: 1px solid #d1d5db;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-strong);
   font-size: 0.95rem;
   outline: none;
 }
 
 .login-input-date {
   padding: 0.5rem 0.6rem;
-  border-radius: 0.6rem;
-  border: 1px solid #d1d5db;
   font-size: 0.9rem;
-  outline: none;
+}
+
+.login-input:focus,
+.login-input-date:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary-ring);
 }
 
 .login-submit {
@@ -70,13 +74,15 @@
   padding: 0.65rem 0.9rem;
   border-radius: 0.7rem;
   border: none;
-  background-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
   font-weight: 500;
   font-size: 0.95rem;
   cursor: pointer;
   opacity: 1;
-  transition: background-color 0.15s ease, opacity 0.15s ease, cursor 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .login-submit:disabled {
@@ -87,10 +93,10 @@
 .login-toggle {
   margin-top: 0.35rem;
   padding: 0.4rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: none;
   background-color: transparent;
-  color: #4b5563;
+  color: var(--color-text-nav);
   font-size: 0.85rem;
   cursor: pointer;
   align-self: flex-start;
@@ -98,9 +104,14 @@
 }
 
 .login-error {
-  color: #b91c1c;
+  color: var(--color-danger);
   font-size: 0.85rem;
   margin-top: 0.25rem;
 }
 
-
+@media (max-width: 640px) {
+  .login-grid-2,
+  .login-grid-main-side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

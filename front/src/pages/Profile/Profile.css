@@ -18,32 +18,37 @@
 
 .profile-label {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .profile-input {
   padding: 0.55rem 0.75rem;
-  border-radius: 0.6rem;
-  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
   font-size: 0.95rem;
   outline: none;
 }
 
 .profile-input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary-ring);
 }
 
 .profile-submit {
   align-self: flex-start;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-md);
   border: none;
   padding: 0.65rem 1.25rem;
   font-size: 0.9rem;
   font-weight: 500;
-  background-color: #111827;
-  color: #ffffff;
+  background-color: var(--color-btn-dark);
+  color: var(--color-surface);
   cursor: pointer;
+}
+
+.profile-submit:disabled {
+  opacity: 0.75;
+  cursor: default;
 }
 
 @media (max-width: 640px) {
@@ -51,5 +56,3 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
-
-

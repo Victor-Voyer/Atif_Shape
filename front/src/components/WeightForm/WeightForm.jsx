@@ -1,3 +1,5 @@
+import "./WeightForm.css";
+
 function WeightForm({ value, onChange, onSubmit, loading, error }) {
   return (
     <>

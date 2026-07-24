@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import WeightChart from "../components/WeightChart.jsx";
-import WeightForm from "../components/WeightForm.jsx";
-import StatsPanel from "../components/StatsPanel.jsx";
-import { useAuth } from "../hooks/useAuth.js";
-import { useUserStats } from "../hooks/useUserStats.js";
-import { useCreateWeight } from "../hooks/useCreateWeight.js";
-import "../components/Dashboard.css";
+import WeightChart from "../../components/WeightChart/WeightChart.jsx";
+import WeightForm from "../../components/WeightForm/WeightForm.jsx";
+import StatsPanel from "../../components/StatsPanel/StatsPanel.jsx";
+import { useAuth } from "../../hooks/useAuth.js";
+import { useUserStats } from "../../hooks/useUserStats.js";
+import { useCreateWeight } from "../../hooks/useCreateWeight.js";
+import "./Dashboard.css";
 
 function formatDateLabel(isoDate) {
   if (!isoDate) return "";
@@ -78,9 +78,7 @@ function Dashboard() {
         {loading ? (
           <div className="empty-state">Chargement des données...</div>
         ) : error ? (
-          <div className="empty-state" style={{ color: "#b91c1c" }}>
-            {error}
-          </div>
+          <div className="empty-state empty-state--error">{error}</div>
         ) : (
           <WeightChart data={chartData} targetWeight={targetWeight} />
         )}

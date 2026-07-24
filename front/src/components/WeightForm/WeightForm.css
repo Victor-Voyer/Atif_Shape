@@ -1,0 +1,54 @@
+.weight-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.weight-form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.weight-form-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.weight-form-input {
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.weight-form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary-ring);
+}
+
+.weight-form-button {
+  border-radius: var(--radius-md);
+  border: none;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background-color: var(--color-btn-dark);
+  color: var(--color-surface);
+  cursor: pointer;
+}
+
+.weight-form-button:disabled {
+  opacity: 0.75;
+  cursor: default;
+}
+
+@media (max-width: 900px) {
+  .weight-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

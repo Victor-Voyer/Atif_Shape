@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login as loginRequest, register as registerRequest } from "../services/authApi.js";
-import { getErrorMessage } from "../services/api.js";
-import { useAuth } from "../hooks/useAuth.js";
+import { login as loginRequest, register as registerRequest } from "../../services/authApi.js";
+import { getErrorMessage } from "../../services/api.js";
+import { useAuth } from "../../hooks/useAuth.js";
 import { GENDERS } from "@shared/constants.js";
-import "../components/Login.css";
+import "../Login/Login.css";
 
 function Register() {
   const { loginSuccess } = useAuth();

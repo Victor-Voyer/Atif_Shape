@@ -1,0 +1,23 @@
+.chart-wrapper {
+  height: 230px;
+}
+
+.weight-chart-tooltip {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-tooltip);
+  background-color: var(--color-surface);
+  padding: 0.5rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.weight-chart-tooltip-label {
+  margin: 0 0 0.2rem;
+  color: var(--color-text-muted);
+}
+
+.weight-chart-tooltip-value {
+  margin: 0;
+  color: var(--color-text-strong);
+  font-weight: 600;
+}

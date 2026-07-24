@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login as loginRequest } from "../services/authApi.js";
-import { getErrorMessage } from "../services/api.js";
-import { useAuth } from "../hooks/useAuth.js";
-import "../components/Login.css";
+import { login as loginRequest } from "../../services/authApi.js";
+import { getErrorMessage } from "../../services/api.js";
+import { useAuth } from "../../hooks/useAuth.js";
+import "./Login.css";
 
 function Login() {
   const { loginSuccess } = useAuth();

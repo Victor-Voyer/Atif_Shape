@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { updateUser as updateUserRequest } from "../services/usersApi.js";
-import { getErrorMessage } from "../services/api.js";
-import { useAuth } from "../hooks/useAuth.js";
+import { updateUser as updateUserRequest } from "../../services/usersApi.js";
+import { getErrorMessage } from "../../services/api.js";
+import { useAuth } from "../../hooks/useAuth.js";
 import { GENDERS } from "@shared/constants.js";
-import "../components/Profile.css";
+import "./Profile.css";
 
 function toInputDate(value) {
   if (!value) return "";
