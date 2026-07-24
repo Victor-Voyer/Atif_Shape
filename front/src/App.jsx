@@ -56,7 +56,7 @@ function App() {
             alt="AkiShape"
             className="app-logo"
           />
-          <h1 className="app-title">
+          <h1 className="app-title hidden">
             Aki
             <span className="app-title-italic">Shape</span>
           </h1>

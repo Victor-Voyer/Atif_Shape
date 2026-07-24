@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 .app-shell {
   display: flex;
   flex-direction: column;
