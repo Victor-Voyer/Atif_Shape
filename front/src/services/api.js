@@ -5,7 +5,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = window.localStorage.getItem("atif_token");
+  const token = window.localStorage.getItem("aki_token");
   if (token) {
     // Le back utilise très probablement un Bearer token
     config.headers.Authorization = `Bearer ${token}`;

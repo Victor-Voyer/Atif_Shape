@@ -1,4 +1,4 @@
-## Front Atif_Shape – Documentation du travail réalisé
+## Front AkiShape – Documentation du travail réalisé
 
 Ce fichier décrit **point par point** ce qui a été mis en place pour le front React dans le dossier `front/`.
 
@@ -57,7 +57,7 @@ Fichier : `src/services/api.js`
 - Création d’une instance Axios avec :
   - `baseURL: "http://localhost:3000/api"` (adapté au back existant).
 - Mise en place d’un **interceptor de requêtes** :
-  - Récupère le token JWT dans `localStorage` (`atif_token`).
+  - Récupère le token JWT dans `localStorage` (`aki_token`).
   - Ajoute l’en-tête HTTP `Authorization: Bearer <token>` pour toutes les requêtes.
 
 Objectif : **ne jamais répéter le code d’ajout du token** dans chaque appel d’API.
@@ -81,10 +81,10 @@ Fonctionnement :
   - `user` : données de l’utilisateur renvoyées par le back.
   - `view` : `"dashboard"` ou `"profile"` (navigation interne simple).
 - **Persistance** :
-  - Au montage du composant, lecture de `atif_token` et `atif_user` dans `localStorage`.
+  - Au montage du composant, lecture de `aki_token` et `aki_user` dans `localStorage`.
   - En cas de connexion/réussite de mise à jour du profil, sauvegarde dans `localStorage`.
 - **Header** :
-  - Affiche le nom de l’appli (“Atif Shape”) + sous-titre explicatif.
+  - Affiche le nom de l’appli (“AkiShape”) + sous-titre explicatif.
   - Navigation `Poids / Profil` via deux boutons (`view`).
   - Affiche le prénom ou le `username` de l’utilisateur + bouton de déconnexion.
 - Rendu conditionnel :

@@ -3,7 +3,7 @@ import "./App.css";
 import Login from "./components/Login.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import Profile from "./components/Profile.jsx";
-import LogoAtifShape from "./assets/Logo-Atif-Shape.png";
+import LogoAkiShape from "./assets/Logo-AkiShape.png";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -11,16 +11,16 @@ function App() {
   const [view, setView] = useState("dashboard"); // 'dashboard' | 'profile'
 
   useEffect(() => {
-    const storedToken = window.localStorage.getItem("atif_token");
-    const storedUser = window.localStorage.getItem("atif_user");
+    const storedToken = window.localStorage.getItem("aki_token");
+    const storedUser = window.localStorage.getItem("aki_user");
 
     if (storedToken && storedUser) {
       try {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
       } catch {
-        window.localStorage.removeItem("atif_token");
-        window.localStorage.removeItem("atif_user");
+        window.localStorage.removeItem("aki_token");
+        window.localStorage.removeItem("aki_user");
       }
     }
   }, []);
@@ -29,20 +29,20 @@ function App() {
     setToken(jwt);
     setUser(userData);
     setView("dashboard");
-    window.localStorage.setItem("atif_token", jwt);
-    window.localStorage.setItem("atif_user", JSON.stringify(userData));
+    window.localStorage.setItem("aki_token", jwt);
+    window.localStorage.setItem("aki_user", JSON.stringify(userData));
   };
 
   const handleUserUpdated = (updatedUser) => {
     setUser(updatedUser);
-    window.localStorage.setItem("atif_user", JSON.stringify(updatedUser));
+    window.localStorage.setItem("aki_user", JSON.stringify(updatedUser));
   };
 
   const handleLogout = () => {
     setToken(null);
     setUser(null);
-    window.localStorage.removeItem("atif_token");
-    window.localStorage.removeItem("atif_user");
+    window.localStorage.removeItem("aki_token");
+    window.localStorage.removeItem("aki_user");
   };
 
   const isAuthenticated = Boolean(token && user);
@@ -52,12 +52,12 @@ function App() {
       <header className="app-header">
         <div className="app-header-title">
           <img
-            src={LogoAtifShape}
-            alt="Atif Shape"
+            src={LogoAkiShape}
+            alt="AkiShape"
             className="app-logo"
           />
           <h1 className="app-title">
-            Atif'
+            Aki
             <span className="app-title-italic">Shape</span>
           </h1>
         </div>

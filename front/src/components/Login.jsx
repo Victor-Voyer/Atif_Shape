@@ -155,7 +155,7 @@ function Login({ onLoginSuccess }) {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required={mode === "register"}
-                  placeholder="atif_shape_92"
+                  placeholder="aki_shape_92"
                   className="login-input"
                 />
               </div>
@@ -174,7 +174,7 @@ function Login({ onLoginSuccess }) {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required={mode === "register"}
-                    placeholder="Atif"
+                    placeholder="Aki"
                     className="login-input"
                   />
                 </div>

@@ -1,8 +1,8 @@
-## Architecture du projet Atif Shape
+## Architecture du projet AkiShape
 
 ### Vue d’ensemble
 
-**Atif Shape** est une application de suivi de poids composée :
+**AkiShape** est une application de suivi de poids composée :
 
 - **Back-end** : API REST en Node.js / Express, avec **Sequelize** pour l’accès à la base de données (modèle relationnel `User` / `UserWeight`) et une authentification par **JWT**.
 - **Front-end** : SPA en **React** (Vite) qui consomme l’API, gère l’authentification (login / register) et affiche un tableau de bord avec les courbes et statistiques de poids.
@@ -220,7 +220,7 @@ Ce middleware est pensé pour être utilisé sur des routes de mise à jour de p
     - `token` JWT.
     - `user` courant.
     - `view` (`"dashboard"` ou `"profile"`).
-  - Persiste `token` et `user` dans `localStorage` (`atif_token`, `atif_user`) et les recharge au démarrage.
+  - Persiste `token` et `user` dans `localStorage` (`aki_token`, `aki_user`) et les recharge au démarrage.
   - Affiche :
     - `Login` si l’utilisateur n’est pas authentifié.
     - `Dashboard` si authentifié et `view === "dashboard"`.
@@ -232,7 +232,7 @@ Ce middleware est pensé pour être utilisé sur des routes de mise à jour de p
 - **Fichier** : `front/src/services/api.js`
   - Crée une instance Axios avec `baseURL = "http://localhost:3000/api"`.
   - Intercepteur de requête :
-    - Lit `atif_token` depuis `localStorage`.
+    - Lit `aki_token` depuis `localStorage`.
     - Ajoute automatiquement l’en-tête `Authorization: Bearer <token>` si présent.
 
 Tous les composants front (Login, Dashboard, Profile) consomment l’API via ce service partagé.
