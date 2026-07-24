@@ -4,13 +4,6 @@ export default (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
-      avatar: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          len: [1, 255],
-        },
-      },
       gender: {
         type: DataTypes.ENUM("male", "female"),
         allowNull: false,
@@ -28,11 +21,11 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      age: {
-        type: DataTypes.DATE,
+      birthdate: {
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
-          isValidAge(value) {
+          isValidBirthdate(value) {
             const birthdate = new Date(value);
             const today = new Date();
 
@@ -83,8 +76,6 @@ export default (sequelize, DataTypes) => {
           len: [8, 300],
         },
       },
-
-      
     },
     {
       sequelize,

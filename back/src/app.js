@@ -12,6 +12,4 @@ app.use(express.json());
 
 app.use("/api", router);
 
-// app.use("/uploads", express.static("public/uploads"));
-
 export default app;

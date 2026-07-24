@@ -68,6 +68,9 @@
   font-size: 0.85rem;
   color: #4b5563;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
 .nav-toggle-btn-active {

@@ -1,32 +1,38 @@
 import { body, validationResult } from "express-validator";
 import db from "../../models/index.js";
+import { GENDER_VALUES } from "../../../../shared/constants.js";
+import { sendError } from "../../utils/httpResponse.js";
 
 const { User } = db;
 
 const MAX_LENGTH = 150;
 const MAX_PASSWORD_LENGTH = 300;
 
-// Middleware générique pour renvoyer les erreurs de validation
 export const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
-      success: false,
-      message: "Erreurs de validation",
-      errors: errors.array().map((err) => err.msg || err),
-    });
+    return sendError(
+      res,
+      400,
+      "Erreurs de validation",
+      errors.array().map((err) => err.msg || err)
+    );
   }
   next();
 };
 
-// Validation à la création d'un utilisateur
-export const createUserValidation = [
+export const loginValidation = [
+  body("email").isEmail().withMessage("Email invalide"),
+  body("password").notEmpty().withMessage("Le mot de passe est obligatoire"),
+];
+
+export const registerValidation = [
   body("gender")
     .exists({ checkNull: true })
-    .withMessage('gender est obligatoire et doit être "male" ou "female"')
+    .withMessage(`gender est obligatoire et doit être "${GENDER_VALUES.join('" ou "')}"`)
     .bail()
-    .isIn(["male", "female"])
-    .withMessage('gender est obligatoire et doit être "male" ou "female"'),
+    .isIn(GENDER_VALUES)
+    .withMessage(`gender est obligatoire et doit être "${GENDER_VALUES.join('" ou "')}"`),
 
   body("username")
     .isString()
@@ -67,12 +73,12 @@ export const createUserValidation = [
     .isLength({ max: MAX_LENGTH })
     .withMessage(`last_name ne doit pas dépasser ${MAX_LENGTH} caractères`),
 
-  body("age")
+  body("birthdate")
     .exists({ checkNull: true })
-    .withMessage("age est obligatoire")
+    .withMessage("birthdate est obligatoire")
     .bail()
     .isISO8601()
-    .withMessage("age doit être une date valide"),
+    .withMessage("birthdate doit être une date valide"),
 
   body("height")
     .exists({ checkNull: true })
@@ -118,50 +124,45 @@ export const createUserValidation = [
     ),
 ];
 
-// Validation à la mise à jour d'un utilisateur
 export const updateUserValidation = [
-  // Vérifie qu'au moins un champ est fourni
-  body()
-    .custom((value) => {
-      if (!value || typeof value !== "object") {
-        throw new Error("Le corps de la requête doit être en JSON !");
-      }
+  body().custom((value) => {
+    if (!value || typeof value !== "object") {
+      throw new Error("Le corps de la requête doit être en JSON !");
+    }
 
-      const {
-        gender,
-        username,
-        first_name,
-        last_name,
-        age,
-        height,
-        target_weight,
-        email,
-        password,
-      } = value;
+    const {
+      gender,
+      username,
+      first_name,
+      last_name,
+      birthdate,
+      height,
+      target_weight,
+      email,
+      password,
+    } = value;
 
-      if (
-        typeof gender === "undefined" &&
-        typeof username === "undefined" &&
-        typeof first_name === "undefined" &&
-        typeof last_name === "undefined" &&
-        typeof age === "undefined" &&
-        typeof height === "undefined" &&
-        typeof target_weight === "undefined" &&
-        typeof email === "undefined" &&
-        typeof password === "undefined"
-      ) {
-        throw new Error(
-          "Au moins un champ doit être fourni pour une modification"
-        );
-      }
+    if (
+      typeof gender === "undefined" &&
+      typeof username === "undefined" &&
+      typeof first_name === "undefined" &&
+      typeof last_name === "undefined" &&
+      typeof birthdate === "undefined" &&
+      typeof height === "undefined" &&
+      typeof target_weight === "undefined" &&
+      typeof email === "undefined" &&
+      typeof password === "undefined"
+    ) {
+      throw new Error("Au moins un champ doit être fourni pour une modification");
+    }
 
-      return true;
-    }),
+    return true;
+  }),
 
   body("gender")
     .optional()
-    .isIn(["male", "female"])
-    .withMessage('gender doit être "male" ou "female"'),
+    .isIn(GENDER_VALUES)
+    .withMessage(`gender doit être "${GENDER_VALUES.join('" ou "')}"`),
 
   body("username")
     .optional()
@@ -205,10 +206,10 @@ export const updateUserValidation = [
     .isLength({ max: MAX_LENGTH })
     .withMessage(`last_name ne doit pas dépasser ${MAX_LENGTH} caractères`),
 
-  body("age")
+  body("birthdate")
     .optional()
     .isISO8601()
-    .withMessage("age doit être une date valide"),
+    .withMessage("birthdate doit être une date valide"),
 
   body("height")
     .optional({ nullable: true })
@@ -260,4 +261,11 @@ export const updateUserValidation = [
     ),
 ];
 
-
+export const createWeightValidation = [
+  body("weight")
+    .exists({ checkNull: true })
+    .withMessage("weight est obligatoire")
+    .bail()
+    .isFloat({ min: 1, max: 500 })
+    .withMessage("weight doit être un nombre compris entre 1 et 500"),
+];

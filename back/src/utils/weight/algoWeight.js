@@ -1,6 +1,3 @@
-import db from "../../models/index.js";
-const { UserWeight } = db;
-
 export function calculateIMC(weightKg, heightCm) {
   if (!weightKg || !heightCm) {
     throw new Error("Poids et taille sont obligatoires pour calculer l’IMC.");
@@ -21,25 +18,24 @@ export function calculateIMC(weightKg, heightCm) {
   };
 }
 
-export async function calculateMaxWeight( id ) {
-    const maxWeight = await UserWeight.max("weight",{
-        where: {
-            user_id: id,
-        },
-    });
-    return maxWeight;
+export function calculateMaxWeight(weights) {
+  if (!weights || weights.length === 0) return null;
+  return Math.max(...weights.map((w) => Number(w.weight)));
 }
 
-export async function calculateMinWeight( id ) {
-    const minWeight = await UserWeight.min("weight",{ 
-      where: { 
-        user_id: id 
-      } 
-    });
-    return minWeight;
+export function calculateMinWeight(weights) {
+  if (!weights || weights.length === 0) return null;
+  return Math.min(...weights.map((w) => Number(w.weight)));
 }
 
-// Progression vers le poids objectif fixé par l'utilisateur
+export function getStartingWeight(weights) {
+  if (!weights || weights.length === 0) return null;
+  const sorted = [...weights].sort(
+    (a, b) => new Date(a.measured_at) - new Date(b.measured_at)
+  );
+  return sorted[0].weight;
+}
+
 export function calculateGoalProgress(startingWeight, currentWeight, targetWeight) {
   if (targetWeight == null || currentWeight == null || startingWeight == null) {
     return null;
@@ -71,20 +67,3 @@ export function calculateGoalProgress(startingWeight, currentWeight, targetWeigh
     progressPercent,
   };
 }
-
-// Premier poids enregistré pour l'utilisateur (poids de départ, ne change jamais)
-export async function getStartingWeight(id) {
-  const firstMeasure = await UserWeight.findOne({
-    where: {
-      user_id: id,
-    },
-    order: [["measured_at", "ASC"]],
-  });
-
-  if (!firstMeasure) {
-    return null;
-  }
-
-  return firstMeasure.weight;
-}
-

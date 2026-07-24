@@ -1,6 +1,9 @@
-import { useMemo, useState } from "react";
-import api from "../services/api.js";
-import "./Profile.css";
+import { useEffect, useState } from "react";
+import { updateUser as updateUserRequest } from "../services/usersApi.js";
+import { getErrorMessage } from "../services/api.js";
+import { useAuth } from "../hooks/useAuth.js";
+import { GENDERS } from "@shared/constants.js";
+import "../components/Profile.css";
 
 function toInputDate(value) {
   if (!value) return "";
@@ -9,25 +12,32 @@ function toInputDate(value) {
   return d.toISOString().slice(0, 10);
 }
 
-function Profile({ user, onUserUpdated }) {
-  const initial = useMemo(
-    () => ({
-      gender: user?.gender || "male",
-      username: user?.username || "",
-      first_name: user?.first_name || "",
-      last_name: user?.last_name || "",
-      age: toInputDate(user?.age),
-      height: user?.height ?? "",
-      target_weight: user?.target_weight ?? "",
-      email: user?.email || "",
-    }),
-    [user],
-  );
+function buildInitial(user) {
+  return {
+    gender: user?.gender || GENDERS.MALE,
+    username: user?.username || "",
+    first_name: user?.first_name || "",
+    last_name: user?.last_name || "",
+    birthdate: toInputDate(user?.birthdate),
+    height: user?.height ?? "",
+    target_weight: user?.target_weight ?? "",
+    email: user?.email || "",
+  };
+}
 
-  const [form, setForm] = useState(initial);
+function Profile() {
+  const { user, updateUser } = useAuth();
+  const [form, setForm] = useState(() => buildInitial(user));
+  const [initial, setInitial] = useState(() => buildInitial(user));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  useEffect(() => {
+    const next = buildInitial(user);
+    setForm(next);
+    setInitial(next);
+  }, [user]);
 
   const handleChange = (field) => (event) => {
     const value = event.target.value;
@@ -55,19 +65,18 @@ function Profile({ user, onUserUpdated }) {
 
     setSaving(true);
     try {
-      const response = await api.put(`/users/${user.id}`, payload);
-      const updatedUser = response.data?.data;
+      const response = await updateUserRequest(user.id, payload);
+      const updatedUser = response?.data;
       if (updatedUser) {
-        onUserUpdated(updatedUser);
+        updateUser(updatedUser);
         setSuccess("Profil mis à jour avec succès.");
       } else {
         setSuccess("Profil mis à jour.");
       }
     } catch (err) {
-      const message =
-        err.response?.data?.message ||
-        "Impossible de mettre à jour votre profil.";
-      setError(message);
+      setError(
+        getErrorMessage(err, "Impossible de mettre à jour votre profil.")
+      );
     } finally {
       setSaving(false);
     }
@@ -85,10 +94,7 @@ function Profile({ user, onUserUpdated }) {
           </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="profile-form"
-        >
+        <form onSubmit={handleSubmit} className="profile-form">
           <div className="profile-grid">
             <div className="profile-field">
               <label className="profile-label" htmlFor="gender">
@@ -100,8 +106,8 @@ function Profile({ user, onUserUpdated }) {
                 onChange={handleChange("gender")}
                 className="profile-input"
               >
-                <option value="male">Homme</option>
-                <option value="female">Femme</option>
+                <option value={GENDERS.MALE}>Homme</option>
+                <option value={GENDERS.FEMALE}>Femme</option>
               </select>
             </div>
 
@@ -145,14 +151,14 @@ function Profile({ user, onUserUpdated }) {
             </div>
 
             <div className="profile-field">
-              <label className="profile-label" htmlFor="age">
+              <label className="profile-label" htmlFor="birthdate">
                 Date de naissance
               </label>
               <input
-                id="age"
+                id="birthdate"
                 type="date"
-                value={form.age}
-                onChange={handleChange("age")}
+                value={form.birthdate}
+                onChange={handleChange("birthdate")}
                 className="profile-input"
               />
             </div>
@@ -206,11 +212,7 @@ function Profile({ user, onUserUpdated }) {
           {error && <p className="form-error">{error}</p>}
           {success && <p className="form-success">{success}</p>}
 
-          <button
-            type="submit"
-            className="profile-submit"
-            disabled={saving}
-          >
+          <button type="submit" className="profile-submit" disabled={saving}>
             {saving ? "Enregistrement..." : "Enregistrer les modifications"}
           </button>
         </form>
@@ -220,5 +222,3 @@ function Profile({ user, onUserUpdated }) {
 }
 
 export default Profile;
-
-

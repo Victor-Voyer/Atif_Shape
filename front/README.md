@@ -143,8 +143,8 @@ Formulaire d’ajout de poids :
   - transformation éventuelle `,` → `.`,
   - refus des valeurs non numériques ou ≤ 0.
 - Appel API :
-  - `POST /users` avec `{ weight: <nombre> }`.
-  - En cas de succès : on vide le champ et on incrémente une clé `reloadKey` pour recharger les données.
+  - `POST /users/:id/weights` avec `{ weight: <nombre> }`.
+  - En cas de succès : on vide le champ et on refetch les données.
   - En cas d’erreur : message rouge “Impossible d’enregistrer ce nouveau poids”.
 
 Affichage des stats :
@@ -176,7 +176,7 @@ Librairie : **Recharts**
 
 ### 8. Page Profil – `Profile.jsx`
 
-Fichier : `src/components/Profile.jsx`
+Fichier : `src/pages/Profile.jsx`
 
 Objectif : permettre à l’utilisateur de **modifier ses informations** personnelles.
 
@@ -185,16 +185,17 @@ Champs gérés :
 - `username`,
 - `first_name`,
 - `last_name`,
-- `age` (géré comme `input type="date"`),
+- `birthdate` (input `type="date"`),
 - `height` (en cm),
+- `target_weight`,
 - `email`.
 
 Fonctionnement :
-- Initialisation du state local à partir de `user` fourni par `App`.
+- Initialisation du state local à partir de `user` (AuthContext), resync si `user` change.
 - Au `submit` :
-  - on construit un `payload` contenant **uniquement les champs modifiés** (par rapport aux valeurs initiales),
+  - on construit un `payload` contenant **uniquement les champs modifiés**,
   - envoi sur `PUT /users/:id`,
-  - en cas de succès : appel de `onUserUpdated(updatedUser)` pour mettre à jour le `user` global et le `localStorage`,
+  - en cas de succès : `updateUser` dans AuthContext (+ localStorage),
   - affichage d’un message de succès vert ou d’une erreur rouge.
 
 Design :
@@ -203,9 +204,9 @@ Design :
 
 ---
 
-### 9. Navigation interne : Poids / Profil
+### 9. Navigation : Poids / Profil
 
-Au lieu d’utiliser un router complet, la navigation est gérée **simplement dans `App.jsx`** :
+La navigation utilise **React Router** (`/`, `/profile`, `/login`, `/register`) dans `App.jsx` :
 
 - état `view` : `"dashboard"` ou `"profile"`,
 - deux boutons dans le header (`Poids`, `Profil`) qui changent `view`,

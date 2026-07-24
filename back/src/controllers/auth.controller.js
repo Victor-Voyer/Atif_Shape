@@ -1,61 +1,26 @@
-import { register, validateCredentials, generateToken } from '../services/auth.service.js';
-import { validationResult } from 'express-validator';
+import { register, validateCredentials, generateToken } from "../services/auth.service.js";
+import { sendSuccess, sendError } from "../utils/httpResponse.js";
 
 export const registerUser = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ 
-            success: false,
-            message: 'Erreurs de validation',
-            errors: errors.array() 
-        });
-    }
-    try {
-        
-        const user = await register(req.body);
-        res.status(201).json({ 
-            success: true,
-            message: 'Utilisateur créé avec succès',
-            data: user
-        });
-    } catch (error) {
-        res.status(500).json({ 
-            success: false,
-            message: error.message 
-        });
-    }
+  try {
+    const user = await register(req.body);
+    return sendSuccess(res, 201, "Utilisateur créé avec succès", user);
+  } catch (error) {
+    return sendError(res, 500, error.message);
+  }
 };
 
 export const login = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ 
-            success: false,
-            message: 'Erreurs de validation',
-            errors: errors.array() 
-        });
-    }
+  const { email, password } = req.body;
 
-    const { email, password } = req.body;
-
-    try {
-        const user = await validateCredentials(email, password);
-        if (!user) {
-            return res.status(401).json({ 
-                success: false,
-                message: 'Email ou mot de passe incorrect'
-            });
-        }
-        res.status(200).json({ 
-            success: true,
-            message: 'Connexion réussie',
-            data: user,
-            token: await generateToken(user)
-        });
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
+  try {
+    const user = await validateCredentials(email, password);
+    if (!user) {
+      return sendError(res, 401, "Email ou mot de passe incorrect");
     }
+    const token = await generateToken(user);
+    return sendSuccess(res, 200, "Connexion réussie", user, { token });
+  } catch (error) {
+    return sendError(res, 500, error.message);
+  }
 };
