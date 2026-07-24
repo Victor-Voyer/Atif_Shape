@@ -6,6 +6,7 @@ import {
   getUserById,
 } from "../controllers/users.controller.js";
 import { createWeight } from "../controllers/weights.controller.js";
+import { getUserProgram } from "../controllers/program.controller.js";
 import {
   updateUserValidation,
   createWeightValidation,
@@ -26,6 +27,7 @@ router.put(
 );
 router.delete("/:id", verifyToken, requireSelf, deleteUser);
 router.get("/:id/stats", verifyToken, requireSelf, getUserStats);
+router.get("/:id/program", verifyToken, requireSelf, getUserProgram);
 router.post(
   "/:id/weights",
   verifyToken,

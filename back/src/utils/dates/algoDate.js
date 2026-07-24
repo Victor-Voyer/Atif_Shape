@@ -2,6 +2,21 @@ function normalizeDate(date) {
   return new Date(date);
 }
 
+export function getAge(birthdate) {
+  if (!birthdate) return null;
+
+  const birth = normalizeDate(birthdate);
+  const today = new Date();
+
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age -= 1;
+  }
+
+  return age;
+}
+
 export function getDaysSinceFirstMeasure(weights) {
   if (!weights || weights.length === 0) return 0;
 

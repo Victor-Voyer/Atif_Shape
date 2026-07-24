@@ -14,6 +14,14 @@ function Nav() {
         Poids
       </NavLink>
       <NavLink
+        to="/program"
+        className={({ isActive }) =>
+          `nav-toggle-btn ${isActive ? "nav-toggle-btn-active" : ""}`
+        }
+      >
+        Programme
+      </NavLink>
+      <NavLink
         to="/profile"
         className={({ isActive }) =>
           `nav-toggle-btn ${isActive ? "nav-toggle-btn-active" : ""}`

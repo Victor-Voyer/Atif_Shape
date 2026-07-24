@@ -1,0 +1,81 @@
+.program-summary {
+  margin-bottom: 1.2rem;
+}
+
+.program-direction {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-ring);
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.program-focus {
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+  margin: 0.4rem 0;
+}
+
+.program-frequency {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.program-sessions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.program-session {
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--gradient-stat);
+}
+
+.program-session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.program-session-type {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+.program-session-intensity {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.program-session-focus {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+  margin-bottom: 0.3rem;
+}
+
+.program-session-description {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.4rem;
+}
+
+.program-session-duration {
+  font-size: 0.8rem;
+  color: var(--color-text-subtle);
+}
+
+.program-disclaimer {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  font-style: italic;
+}

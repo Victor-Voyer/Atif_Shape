@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
+import Program from "./pages/Program/Program.jsx";
 import { useAuth } from "./hooks/useAuth.js";
 
 function ProtectedRoute({ children }) {
@@ -53,6 +54,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/program"
+          element={
+            <ProtectedRoute>
+              <Program />
             </ProtectedRoute>
           }
         />
