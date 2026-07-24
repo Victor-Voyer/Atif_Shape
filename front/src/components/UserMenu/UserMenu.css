@@ -1,0 +1,55 @@
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border);
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.user-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-online);
+}
+
+.logout-button {
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  background-color: var(--color-surface);
+  color: var(--color-text-nav);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.logout-button:hover {
+  background-color: var(--color-bg-soft);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-strong);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+.logout-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-text-subtle);
+}

@@ -1,0 +1,25 @@
+.nav-toggle {
+  display: inline-flex;
+  padding: 0.15rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-border);
+}
+
+.nav-toggle-btn {
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  color: var(--color-text-nav);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-toggle-btn-active {
+  background-color: var(--color-surface);
+  color: var(--color-text-strong);
+  box-shadow: var(--shadow-nav);
+}
